@@ -1,7 +1,6 @@
 # React + p5.js
 
-This application defines a Sketch component, that renders a p5.js sketch inside
-a React component.
+This application defines a React component, Sketch, that renders a p5.js sketch.
 
 ## Usage
 
@@ -38,17 +37,17 @@ a React component.
 
 ## Limitations
 
-The `setup` function mustn't create the canvas. (This limitation is easy to
-remove, I just haven't done it yet.)
+* The `setup` function mustn't create the canvas. (This limitation is easy to
+  remove, I just haven't done it yet.)
 
-Resizing the component, by changing the value of its `width` or `height`
-properties, creates a new sketch without discarding the old one. I haven't
-tested to see what happens in this case.
+* Resizing the component, by changing the value of its `width` or `height`
+  properties, creates a new sketch without discarding the old one. I haven't
+  tested to see what happens in this case.
 
-If a sketch uses global (module-level) variables, it probably doesn't make sense
-to use in several instances of Sketch. This could be fixed by recognizing if the
-module exported a `makeSketch` function, and using this instead of its other
-exported functions.
+* If a sketch uses global (module-level) variables, it probably doesn't make
+  sense to use in several instances of Sketch. This could be fixed by
+  recognizing if the module is a function, and using this to create the
+  instance-mode sketch.
 
 ## License
 

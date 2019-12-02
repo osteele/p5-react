@@ -1,6 +1,4 @@
-import {
-    p
-} from './Sketch'
+import { p } from './Sketch'
 
 let particles = Array(20).fill().map(makeParticle);
 

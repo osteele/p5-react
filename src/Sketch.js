@@ -1,7 +1,4 @@
-import React, {
-    useEffect,
-    useState
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import * as P5 from 'p5';
 
 const P5_SENTINEL = {
@@ -33,7 +30,7 @@ export default function Sketch(props) {
                     }
                 }
             });
-            const setup = sk.setup || (() => {});
+            const setup = sk.setup || (() => { });
             sk.setup = () => {
                 const canvas = sk.createCanvas(props.width || 500, props.height || 500);
                 setCanvas(canvas);
@@ -43,9 +40,7 @@ export default function Sketch(props) {
         new P5(makeSketch);
     }, [props.width, props.height, sketch]);
     if (!canvas) {
-        return <div > Creating canvas… < /div>
+        return <div>Creating canvas…</div>
     }
-    return <div ref = {
-        ref => canvas.parent(ref)
-    } > < /div>
+    return <div ref={ref => canvas.parent(ref)}></div>
 }
