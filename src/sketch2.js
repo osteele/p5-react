@@ -17,9 +17,8 @@ function moveParticle([x, y, dx, dy]) {
 
 function drawParticle([x, y]) {
     p.fill('white')
-    p.circle(x, y, 5, 5);
+    p.circle(x, y, 10, 10);
 }
-
 
 export function setup() {
     p.background(40);
@@ -28,4 +27,9 @@ export function setup() {
 export function draw() {
     particles = particles.map(moveParticle);
     particles.forEach(drawParticle);
+}
+
+export function mouseClicked() {
+    particles.shift();
+    particles.push([p.mouseX, p.mouseY, p.random(-1, 1), p.random(-1, 1)]);
 }
