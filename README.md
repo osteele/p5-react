@@ -15,9 +15,14 @@ a React component.
 
 3. Create the sketch. The sketch can be written as a normal p5.js sketch, except that:
 
-   1. It must begin wth `import { p5 } from './Sketch.js'`
-   2. It is running in [React instance mode](https://github.com/processing/p5.js/wiki/Global-and-instance-mode).
-      React methods must be accessed via the `p5.` prefix; for example, `p5.rect(…)`.
+   1. It must begin wth `import { p } from './Sketch.js'`
+   2. Functions that mean something special to p5.js, such as `setup` and
+      `draw`, must be `export`-ed.
+   3. It is running in [React instance
+      mode](https://github.com/processing/p5.js/wiki/Global-and-instance-mode).
+      React methods must be accessed via the `p.` prefix; for example,
+      `p.rect(…)`. A function that is called after the `export`-ed function has
+      returned, must use a captured value of `p`.
 
    See `src/sketch1.js` and `src/sketch2.js` as examples.
 
@@ -30,6 +35,20 @@ a React component.
    ```
 
    See `src/App.js` for examples.
+
+## Limitations
+
+The `setup` function mustn't create the canvas. (This limitation is easy to
+remove, I just haven't done it yet.)
+
+Resizing the component, by changing the value of its `width` or `height`
+properties, creates a new sketch without discarding the old one. I haven't
+tested to see what happens in this case.
+
+If a sketch uses global (module-level) variables, it probably doesn't make sense
+to use in several instances of Sketch. This could be fixed by recognizing if the
+module exported a `makeSketch` function, and using this instead of its other
+exported functions.
 
 ## License
 

@@ -1,5 +1,5 @@
 import {
-    p5
+    p
 } from './Sketch'
 
 let particles = Array(20).fill().map(makeParticle);
@@ -15,14 +15,14 @@ function moveParticle([x, y, dx, dy]) {
     dy *= b;
     x += dx;
     y += dy;
-    x = (x + p5.width) % p5.width;
-    y = (y + p5.height) % p5.height;
+    x = (x + p.width) % p.width;
+    y = (y + p.height) % p.height;
     return [x, y, dx, dy];
 }
 
 function drawParticle([x, y]) {
-    p5.fill('white')
-    p5.circle(x, y, 5, 5);
+    p.fill('white')
+    p.circle(x, y, 5, 5);
 }
 
 function repel(p1, p2) {
@@ -43,7 +43,7 @@ function repel(p1, p2) {
 
 function bounceParticles() {
     const particlesAndMouse = [
-        [p5.mouseX, p5.mouseY, 0, 0], ...particles
+        [p.mouseX, p.mouseY, 0, 0], ...particles
     ];
     particlesAndMouse.forEach(p1 =>
         particlesAndMouse.forEach(p2 =>
@@ -52,7 +52,7 @@ function bounceParticles() {
 
 
 export function draw() {
-    p5.background(40);
+    p.background(40);
     particles.forEach(bounceParticles);
     particles = particles.map(moveParticle);
     particles.forEach(drawParticle);
