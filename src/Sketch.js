@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import * as P5 from 'p5';
+import React, { useState } from "react";
+import * as P5 from "p5";
 
 const P5_SENTINEL = {
     error: "p5 used outside the dynamic scope of an exported function."
-}
+};
 
 /** A global variable that holds the current sketch during the dynamic scope of
  * each sketch function invocatioh. This works because JavaScript is
@@ -11,15 +11,14 @@ const P5_SENTINEL = {
 export var p = P5_SENTINEL;
 
 export default function Sketch(props) {
-    const [canvas, setCanvas] = useState();
-    const {
-        sketch
-    } = props;
-    useEffect(() => {
+    const { sketch } = props;
+    const [instance, setInstance] = useState();
+
+    function makeInstance(ref) {
         const makeSketch = sk => {
             Object.keys(sketch).forEach(name => {
                 const value = sketch[name];
-                if (typeof value === 'function') {
+                if (typeof value === "function") {
                     sk[name] = (...args) => {
                         try {
                             p = sk;
@@ -27,20 +26,27 @@ export default function Sketch(props) {
                         } finally {
                             p = P5_SENTINEL;
                         }
-                    }
+                    };
                 }
             });
-            const setup = sk.setup || (() => { });
+            const setup = sk.setup || (() => {});
             sk.setup = () => {
-                const canvas = sk.createCanvas(props.width || 500, props.height || 500);
-                setCanvas(canvas);
+                sk.createCanvas(props.width || 500, props.height || 500);
                 setup();
             };
         };
-        new P5(makeSketch);
-    }, [props.width, props.height, sketch]);
-    if (!canvas) {
-        return <div>Creating canvas…</div>
+        const p5 = new P5(makeSketch, ref);
+        setInstance(p5);
     }
-    return <div ref={ref => canvas.parent(ref)}></div>
+    function removeInstance() {
+        instance.remove();
+        setInstance(null);
+    }
+    return (
+        <div
+            ref={ref =>
+                ref ? instance || makeInstance(ref) : instance && removeInstance()
+            }
+        />
+    );
 }
